@@ -9,7 +9,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="Production API")
 
 # Include all routes from the v1 module
-app.include_router(products.router, prefix="/api/v1/products", tags=["products"])
+app.include_router(products.router, prefix="/api/v1", tags=["products"])
 
 @app.get("/")
 def read_root():
