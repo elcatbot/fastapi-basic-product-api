@@ -1,11 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+import os
 
 # Connection String
-# Format: mssql+pyodbc://<username>:<password>@<server>/<database>?driver=ODBC+Driver+17+for+SQL+Server
-# DATABASE_URL = "mssql+pyodbc://sa:YourPassword123@localhost/ProductDB?driver=ODBC+Driver+17+for+SQL+Server"
-DATABASE_URL = "mysql+mysqldb://user:password@127.0.0.1:3306/myproductdb"
-engine = create_engine(DATABASE_URL, echo=True)
+SQLALCHEMY_DATABASE_URL = "mysql+mysqldb://user:password@127.0.0.1:3306/myproductdb"
+engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 class Base(DeclarativeBase):
