@@ -3,6 +3,7 @@ from app.schemas.product_dto import ProductCreateDto
 from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from app.core.exceptions import EntityNotFoundError
 
 class CRUDProduct:
 
@@ -11,7 +12,10 @@ class CRUDProduct:
         return db.execute(query).scalars().all()
 
     def get_by_id(self, db: Session, id: int):
-        return db.get(ProductEntity, id)
+        product = db.get(ProductEntity, id)
+        if not product:
+            raise EntityNotFoundError(entity_name="Product", entity_id=id)
+        return product
 
     def create(self, db: Session, obj_in: ProductCreateDto):
         obj_in = ProductEntity(
