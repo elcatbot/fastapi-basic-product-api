@@ -4,10 +4,13 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from app.core.exceptions import EntityNotFoundError
+from app.core.logging_config import logger
 
 class CRUDProduct:
 
     def get_all(self, db: Session, skip: int = 0, limit: int = 100):
+        logger.info(f"Getting all products")
+
         query = select(ProductEntity).offset(skip).limit(limit)
         return db.execute(query).scalars().all()
 
@@ -18,6 +21,8 @@ class CRUDProduct:
         return product
 
     def create(self, db: Session, obj_in: ProductCreateDto):
+        logger.info(f"Creating a new product: {obj_in.name}")
+
         obj_in = ProductEntity(
             name=obj_in.name,
             price=obj_in.price,
